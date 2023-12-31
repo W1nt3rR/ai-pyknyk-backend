@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.views.decorators.http import require_http_methods, require_safe
+from django.views.decorators.csrf import csrf_exempt
 import json
 import os
 
@@ -16,21 +18,21 @@ def maps(request):
         data = json.load(file)
     return JsonResponse(data)
 
+@require_http_methods(["GET", "POST"])
+@csrf_exempt
 def calculate(request):
-    headers = request.headers
     body = request.body
-    method = request.method
-    full_path = request.get_full_path()
-    host = request.get_host()
+
+    # get map from body
+    map = json.loads(body)['map']
+    algorithm = json.loads(body)['algorithm']
 
     return JsonResponse({
         'status': 'success',
         'message': 'This is a dummy response',
         'data': {
-            'headers': dict(headers),
+            'map': map,
+            'algorithm': algorithm,
             'body': body.decode('utf-8'),
-            'method': method,
-            'full_path': full_path,
-            'host': host,
         }
     })
