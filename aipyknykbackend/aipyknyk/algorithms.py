@@ -17,7 +17,7 @@ def get_agent_steps(agent, map_name):
     path = agent.get_agent_path(coin_distance)
     steps = [{"step": i+1, "node": node, "cost": coin_distance[path[i-1]][node] if i > 0 else 0} for i, node in enumerate(path)]
 
-    return json.dumps(steps)
+    return steps
 
 # Supported algorithms
 def get_agent_by_name(name):
@@ -34,7 +34,7 @@ def get_agent_by_name(name):
     except KeyError:
         raise ValueError(f"Unsupported agent name: {name}")
 
-# Aki
+# Aki - Greedy
 class Aki(Agent):
     def __init__(self, x, y, file_name):
         super().__init__(x, y, file_name)
@@ -60,7 +60,7 @@ class Aki(Agent):
 
         return path
 
-# Jocke
+# Jocke - Brute force
 class Jocke(Agent):
     def __init__(self, x, y, file_name):
         super().__init__(x, y, file_name)
@@ -89,7 +89,7 @@ def calculateCost(allPaths, coin_distance):
 
     return costs
 
-# Uki
+# Uki - Branch and bound
 class Uki(Agent):
     def __init__(self, x, y, file_name):
         super().__init__(x, y, file_name)
