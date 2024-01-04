@@ -15,7 +15,12 @@ def get_agent_steps(agent, map_name):
     coin_distance = load_map(map_name)
 
     path = agent.get_agent_path(coin_distance)
-    steps = [{"step": i+1, "node": node, "cost": coin_distance[path[i-1]][node] if i > 0 else 0} for i, node in enumerate(path)]
+    steps = [{
+        "step": i,
+        "to_node": node,
+        "from_node": path[i-1] if i > 0 else 0, # 0 is the starting node
+        "cost": coin_distance[path[i-1]][node] if i > 0 else 0
+    } for i, node in enumerate(path)]
 
     return steps
 
