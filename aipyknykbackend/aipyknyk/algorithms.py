@@ -87,8 +87,10 @@ def calculateCost(allPaths, coin_distance):
         path = list(path)
         path.insert(0, 0)
         sum = 0
+
         for i in range(0, (len(path) - 1)):
             sum += coin_distance[path[i]][path[i+1]]
+
         sum += coin_distance[path[len(path) - 1]][0]
         costs.append(sum)
 
@@ -100,7 +102,6 @@ class Uki(Agent):
         super().__init__(x, y, file_name)
 
     def get_agent_path(self, coin_distance):
-        path = [i for i in range(1, len(coin_distance))]
         n = len(coin_distance) #8
         firstNode = (0, n, 0, [0])
 
@@ -131,7 +132,6 @@ class Micko(Agent):
         super().__init__(x, y, file_name)
 
     def get_agent_path(self, coin_distance):
-        path = [i for i in range(1, len(coin_distance))]
         n = len(coin_distance)  # 8
         firstNode = (0, n, 0, [0], 0)
         listOfNodes = [firstNode]
@@ -139,12 +139,16 @@ class Micko(Agent):
 
         while (len(listOfNodes) != 0):
             curr = heapq.heappop(listOfNodes)
+
             if (len(curr[3]) == (n + 1)):  # Nasli smo putanju sa ciljnim cvorom
                 return curr[3]
-            if (len(curr[3]) == n):  # Ako je putanja obisla sve sem krajnjeg, treba da se vrati
+            
+            if (len(curr[3]) == n):
+                # If path has visited all nodes except the last one, it should return to the first one
                 remaining = [0]
             else:
                 remaining = [i for i in range(1, n) if i not in curr[3]]
+
             expandAndCalculate(remaining, listOfNodes, curr, coin_distance, n)
 
 def expandAndCalculate(remaining, listOfNodes, curr, coin_distance, n):

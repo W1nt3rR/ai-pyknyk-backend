@@ -23,7 +23,6 @@ def load_map(map_name):
             f.readline()
 
             coin_distance = [[0]]
-            ident = 1
 
             while True:
                 line = f.readline().strip()
@@ -31,6 +30,7 @@ def load_map(map_name):
                     break
 
                 values = [int(val) for val in line.split(',')]
+                
                 for iteration, coin_sublist in enumerate(coin_distance):
                     coin_sublist.append(values[2 + iteration])
                     
